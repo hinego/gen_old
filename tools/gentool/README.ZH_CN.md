@@ -121,7 +121,7 @@ Value : False / True
 基于数据表定义的数据类型，生成对应的数据类型
 
 
-### 使用示例
+### 使用示例1
 
 ```shell
 gentool -dsn "host=database.local user=postgres password=postgres dbname=mainbot port=5432 sslmode=disable TimeZone=Asia/Shanghai" -db "postgres"
