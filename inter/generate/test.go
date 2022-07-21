@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"gorm.io/gen/internal/parser"
+	"gorm.io/gen/inter/parser"
 )
 
 //GetTestParamInTmpl return param list

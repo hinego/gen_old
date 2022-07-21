@@ -10,8 +10,8 @@ import (
 	"gorm.io/gorm/schema"
 
 	"gorm.io/gen/field"
-	"gorm.io/gen/internal/model"
-	"gorm.io/gen/internal/parser"
+	"gorm.io/gen/inter/model"
+	"gorm.io/gen/inter/parser"
 )
 
 // QueryStructMeta struct info in generated code
@@ -21,7 +21,7 @@ type QueryStructMeta struct {
 	Generated       bool   // whether to generate db model
 	FileName        string // generated file name
 	S               string // the first letter(lower case)of simple Name (receiver)
-	QueryStructName string // internal query struct name
+	QueryStructName string // inter query struct name
 	ModelStructName string // origin/model struct name
 	TableName       string // table name in db server
 	StructInfo      parser.Param

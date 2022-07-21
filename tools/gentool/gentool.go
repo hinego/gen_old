@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"gorm.io/gen/internal/model"
+	"gorm.io/gen/inter/model"
 	"log"
 	"os"
 	"strings"

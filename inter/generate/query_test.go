@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"gorm.io/gen/internal/parser"
+	"gorm.io/gen/inter/parser"
 )
 
 func checkCustomMethod(t *testing.T, expMethods []*parser.Method, methods ...interface{}) {

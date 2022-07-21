@@ -3,7 +3,7 @@ package generate
 import (
 	"testing"
 
-	"gorm.io/gen/internal/parser"
+	"gorm.io/gen/inter/parser"
 )
 
 func checkBuildExpr(t *testing.T, SQL string, splitResult, generateResult []string, i *InterfaceMethod) {

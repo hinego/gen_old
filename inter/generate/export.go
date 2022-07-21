@@ -12,8 +12,8 @@ import (
 
 	"gorm.io/gen/field"
 	"gorm.io/gen/helper"
-	"gorm.io/gen/internal/model"
-	"gorm.io/gen/internal/parser"
+	"gorm.io/gen/inter/model"
+	"gorm.io/gen/inter/parser"
 )
 
 // GetQueryStructMeta generate db model by table name
@@ -123,8 +123,8 @@ func ConvertStructs(db *gorm.DB, structs ...interface{}) (metas []*QueryStructMe
 		structType := reflect.TypeOf(st)
 		name := getStructName(structType.String())
 		newStructName := name
-		if st, ok := st.(interface{ GenInternalDoName() string }); ok {
-			newStructName = st.GenInternalDoName()
+		if st, ok := st.(interface{ GeninterDoName() string }); ok {
+			newStructName = st.GeninterDoName()
 		}
 
 		meta := &QueryStructMeta{

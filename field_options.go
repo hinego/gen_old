@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"gorm.io/gen/field"
-	"gorm.io/gen/internal/generate"
-	"gorm.io/gen/internal/model"
+	"gorm.io/gen/inter/generate"
+	"gorm.io/gen/inter/model"
 	"gorm.io/gorm/schema"
 )
 
