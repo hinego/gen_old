@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/shopspring/decimal v1.3.1
 	golang.org/x/sys v0.0.0-20220222200937-f2425489ef4c // indirect
 	golang.org/x/tools v0.1.11
 	gopkg.in/yaml.v3 v3.0.1

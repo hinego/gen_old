@@ -53,7 +53,7 @@ type Config struct {
 	modelNameNS func(tableName string) (modelName string)
 	fileNameNS  func(tableName string) (fileName string)
 
-	dataTypeMap    map[string]func(detailType string) (dataType string)
+	dataTypeMap    map[string]func(c *model.Column) (dataType string)
 	fieldJSONTagNS func(columnName string) (tagContent string)
 	fieldNewTagNS  func(columnName string) (tagContent string)
 }
@@ -83,7 +83,7 @@ func (cfg *Config) WithFileNameStrategy(ns func(tableName string) (fileName stri
 }
 
 // WithDataTypeMap specify data type mapping relationship, only work when syncing table from db
-func (cfg *Config) WithDataTypeMap(newMap map[string]func(detailType string) (dataType string)) {
+func (cfg *Config) WithDataTypeMap(newMap map[string]func(c *model.Column) (dataType string)) {
 	cfg.dataTypeMap = newMap
 }
 

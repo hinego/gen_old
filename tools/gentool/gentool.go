@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"gorm.io/gen/internal/model"
 	"log"
 	"os"
 	"strings"
@@ -183,16 +184,34 @@ func main() {
 	}
 
 	g := gen.NewGenerator(gen.Config{
+		Mode:              gen.WithDefaultQuery,
 		OutPath:           config.OutPath,
 		OutFile:           config.OutFile,
 		ModelPkgPath:      config.ModelPkgName,
 		WithUnitTest:      config.WithUnitTest,
-		FieldNullable:     config.FieldNullable,
-		FieldWithIndexTag: config.FieldWithIndexTag,
-		FieldWithTypeTag:  config.FieldWithTypeTag,
+		FieldNullable:     false,
+		FieldWithIndexTag: true,
+		FieldWithTypeTag:  true,
 		FieldSignable:     config.FieldSignable,
 	})
-
+	var dataMap = map[string]func(c *model.Column) (dataType string){
+		// int mapping
+		"numeric": func(c *model.Column) (dataType string) { return "decimal.Decimal" },
+		"decimal": func(c *model.Column) (dataType string) { return "decimal.Decimal" },
+		"json": func(c *model.Column) (dataType string) {
+			log.Println(c.Name(), c.TableName, c.DatabaseTypeName())
+			name := fmt.Sprintf("%v.%v", c.TableName, c.Name())
+			data := map[string]string{
+				"pushs.user": "[]int64",
+				"pushs.bots": "[]int64",
+			}
+			if t, ok := data[name]; ok {
+				return t
+			}
+			return "string"
+		},
+	}
+	g.WithDataTypeMap(dataMap)
 	g.UseDB(db)
 
 	models, err := genModels(g, db, config.Tables)

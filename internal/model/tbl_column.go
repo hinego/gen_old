@@ -2,7 +2,9 @@ package model
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"log"
 	"reflect"
 	"strings"
 
@@ -12,23 +14,23 @@ import (
 // Column table column's info
 type Column struct {
 	gorm.ColumnType
-	TableName   string                                               `gorm:"column:TABLE_NAME"`
-	Indexes     []*Index                                             `gorm:"-"`
-	UseScanType bool                                                 `gorm:"-"`
-	dataTypeMap map[string]func(detailType string) (dataType string) `gorm:"-"`
-	jsonTagNS   func(columnName string) string                       `gorm:"-"`
-	newTagNS    func(columnName string) string                       `gorm:"-"`
+	TableName   string                                       `gorm:"column:TABLE_NAME"`
+	Indexes     []*Index                                     `gorm:"-"`
+	UseScanType bool                                         `gorm:"-"`
+	dataTypeMap map[string]func(c *Column) (dataType string) `gorm:"-"`
+	jsonTagNS   func(columnName string) string               `gorm:"-"`
+	newTagNS    func(columnName string) string               `gorm:"-"`
 }
 
 // SetDataTypeMap set data type map
-func (c *Column) SetDataTypeMap(m map[string]func(detailType string) (dataType string)) {
+func (c *Column) SetDataTypeMap(m map[string]func(col *Column) (dataType string)) {
 	c.dataTypeMap = m
 }
 
 // GetDataType get data type
 func (c *Column) GetDataType() (fieldtype string) {
 	if mapping, ok := c.dataTypeMap[c.DatabaseTypeName()]; ok {
-		return mapping(c.columnType())
+		return mapping(c)
 	}
 	if c.UseScanType && c.ScanType() != nil {
 		return c.ScanType().String()
@@ -68,7 +70,17 @@ func (c *Column) ToField(nullable, coverable, signable bool) *Field {
 	if c, ok := c.Comment(); ok {
 		comment = c
 	}
-
+	marshal, _ := json.Marshal(&Field{
+		Name:             c.Name(),
+		Type:             fieldType,
+		ColumnName:       c.Name(),
+		MultilineComment: c.multilineComment(),
+		GORMTag:          c.buildGormTag(),
+		JSONTag:          c.jsonTagNS(c.Name()),
+		NewTag:           c.newTagNS(c.Name()),
+		ColumnComment:    comment,
+	})
+	log.Println(string(marshal))
 	return &Field{
 		Name:             c.Name(),
 		Type:             fieldType,
@@ -89,7 +101,9 @@ func (c *Column) multilineComment() bool {
 func (c *Column) buildGormTag() string {
 	var buf bytes.Buffer
 	buf.WriteString(fmt.Sprintf("column:%s;type:%s", c.Name(), c.columnType()))
-
+	if c.columnType() == "json" {
+		buf.WriteString(";serializer:json")
+	}
 	isPriKey, ok := c.PrimaryKey()
 	isValidPriKey := ok && isPriKey
 	if isValidPriKey {

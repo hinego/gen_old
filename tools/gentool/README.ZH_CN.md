@@ -124,5 +124,5 @@ Value : False / True
 ### 使用示例
 
 ```shell
-gentool -dsn "user:pwd@tcp(127.0.0.1:3306)/database?charset=utf8mb4&parseTime=True&loc=Local" -tables "orders,doctor"
+gentool -dsn "host=database.local user=postgres password=postgres dbname=mainbot port=5432 sslmode=disable TimeZone=Asia/Shanghai" -db "postgres"
 ```

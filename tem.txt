@@ -1,0 +1,1 @@
+host=database.local user=postgres password=postgres dbname=pay port=5432 sslmode=disable TimeZone=Asia/Shanghai
