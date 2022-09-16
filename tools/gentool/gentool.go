@@ -199,7 +199,6 @@ func main() {
 		"numeric": func(c *model.Column) (dataType string) { return "decimal.Decimal" },
 		"decimal": func(c *model.Column) (dataType string) { return "decimal.Decimal" },
 		"json": func(c *model.Column) (dataType string) {
-			log.Println(c.Name(), c.TableName, c.DatabaseTypeName())
 			name := fmt.Sprintf("%v.%v", c.TableName, c.Name())
 			data := map[string]string{
 				"pushs.user": "[]int64",

@@ -2,9 +2,7 @@ package model
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
-	"log"
 	"reflect"
 	"strings"
 
@@ -70,17 +68,25 @@ func (c *Column) ToField(nullable, coverable, signable bool) *Field {
 	if c, ok := c.Comment(); ok {
 		comment = c
 	}
-	marshal, _ := json.Marshal(&Field{
-		Name:             c.Name(),
-		Type:             fieldType,
-		ColumnName:       c.Name(),
-		MultilineComment: c.multilineComment(),
-		GORMTag:          c.buildGormTag(),
-		JSONTag:          c.jsonTagNS(c.Name()),
-		NewTag:           c.newTagNS(c.Name()),
-		ColumnComment:    comment,
-	})
-	log.Println(string(marshal))
+	//marshal, _ := json.Marshal(&Field{
+	//	Name:             c.Name(),
+	//	Type:             fieldType,
+	//	ColumnName:       c.Name(),
+	//	MultilineComment: c.multilineComment(),
+	//	GORMTag:          c.buildGormTag(),
+	//	JSONTag:          c.jsonTagNS(c.Name()),
+	//	NewTag:           c.newTagNS(c.Name()),
+	//	ColumnComment:    comment,
+	//})
+	if strings.Contains(comment, "|") {
+		arr := strings.Split(comment, "|")
+		comment = arr[1]
+		if len(arr) == 3 {
+			fieldType = arr[1]
+			comment = arr[2]
+		}
+	}
+
 	return &Field{
 		Name:             c.Name(),
 		Type:             fieldType,
@@ -101,8 +107,16 @@ func (c *Column) multilineComment() bool {
 func (c *Column) buildGormTag() string {
 	var buf bytes.Buffer
 	buf.WriteString(fmt.Sprintf("column:%s;type:%s", c.Name(), c.columnType()))
-	if c.columnType() == "json" {
-		buf.WriteString(";serializer:json")
+	//if c.columnType() == "json" {
+	//	buf.WriteString(";serializer:json")
+	//}
+	if d, ok := c.Comment(); ok {
+		if strings.Contains(d, "|") {
+			arr := strings.Split(d, "|")
+			if len(arr) > 2 && arr[0] != "" {
+				buf.WriteString(";serializer:" + arr[0])
+			}
+		}
 	}
 	isPriKey, ok := c.PrimaryKey()
 	isValidPriKey := ok && isPriKey

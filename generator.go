@@ -109,6 +109,7 @@ func (g *Generator) GenerateModelAs(tableName string, modelName string, fieldOpt
 		g.db.Logger.Error(context.Background(), "generate struct from table fail: %s", err)
 		panic("generate struct fail")
 	}
+	log.Println(meta.Fields)
 	g.models[meta.ModelStructName] = meta
 
 	g.info(fmt.Sprintf("got %d columns from table <%s>", len(meta.Fields), meta.TableName))
@@ -473,7 +474,6 @@ func (g *Generator) generateModelFile() error {
 		pool.Wait()
 		go func(data *generate.QueryStructMeta) {
 			defer pool.Done()
-
 			var buf bytes.Buffer
 			err = render(tmpl.Model, &buf, data)
 			if err != nil {
@@ -488,7 +488,6 @@ func (g *Generator) generateModelFile() error {
 					return
 				}
 			}
-
 			modelFile := modelOutPath + data.FileName + ".gen.go"
 			err = g.output(modelFile, buf.Bytes())
 			if err != nil {

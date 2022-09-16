@@ -122,6 +122,11 @@ func NewTime(table, column string, opts ...Option) Time {
 	return Time{expr: expr{col: toColumn(table, column, opts...)}}
 }
 
+// NewDecimal ...
+func NewDecimal(table, column string, opts ...Option) Decimal {
+	return Decimal{expr: expr{col: toColumn(table, column, opts...)}}
+}
+
 func toColumn(table, column string, opts ...Option) clause.Column {
 	col := clause.Column{Table: table, Name: column}
 	for _, opt := range opts {

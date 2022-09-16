@@ -182,6 +182,9 @@ func (m *Field) Tags() string {
 	if jsonTag := strings.TrimSpace(m.JSONTag); jsonTag != "" {
 		tags.WriteString(fmt.Sprintf(`json:"%s" `, jsonTag))
 	}
+	if m.ColumnComment != "" {
+		tags.WriteString(fmt.Sprintf(`dc:"%s" `, m.ColumnComment))
+	}
 	if newTag := strings.TrimSpace(m.NewTag); newTag != "" {
 		tags.WriteString(newTag)
 	}
@@ -196,7 +199,6 @@ func (m *Field) GenType() string {
 	if m.IsRelation() {
 		return m.Type
 	}
-
 	typ := strings.TrimLeft(m.Type, "*")
 	switch typ {
 	case "string", "bytes":
@@ -211,6 +213,8 @@ func (m *Field) GenType() string {
 		return "Time"
 	case "json.RawMessage", "[]byte":
 		return "Bytes"
+	case "decimal.Decimal":
+		return "Decimal"
 	default:
 		return "Field"
 	}
