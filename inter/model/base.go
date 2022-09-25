@@ -158,6 +158,7 @@ func (m dataTypeMap) Get(dataType, detailType string) string {
 type Field struct {
 	Name             string
 	Type             string
+	Field            string
 	ColumnName       string
 	ColumnComment    string
 	MultilineComment bool
@@ -198,6 +199,9 @@ func (m *Field) IsRelation() bool { return m.Relation != nil }
 func (m *Field) GenType() string {
 	if m.IsRelation() {
 		return m.Type
+	}
+	if m.Field != "" {
+		return m.Field
 	}
 	typ := strings.TrimLeft(m.Type, "*")
 	switch typ {

@@ -78,18 +78,23 @@ func (c *Column) ToField(nullable, coverable, signable bool) *Field {
 	//	NewTag:           c.newTagNS(c.Name()),
 	//	ColumnComment:    comment,
 	//})
+	var field string
 	if strings.Contains(comment, "|") {
 		arr := strings.Split(comment, "|")
 		comment = arr[1]
-		if len(arr) == 3 {
+		if len(arr) >= 3 {
 			fieldType = arr[1]
 			comment = arr[2]
+		}
+		if len(arr) >= 4 {
+			field = arr[3]
 		}
 	}
 
 	return &Field{
 		Name:             c.Name(),
 		Type:             fieldType,
+		Field:            field,
 		ColumnName:       c.Name(),
 		MultilineComment: c.multilineComment(),
 		GORMTag:          c.buildGormTag(),
