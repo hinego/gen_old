@@ -209,7 +209,7 @@ func (p *Param) TmplString() string {
 	if p.IsPointer {
 		res.WriteString("*")
 	}
-	if p.Package != "" {
+	if p.Package != "" && p.Package != "UNDEFINED" {
 		res.WriteString(p.Package)
 		res.WriteString(".")
 	}
