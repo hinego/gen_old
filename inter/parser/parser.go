@@ -210,10 +210,10 @@ func (p *Param) TmplString() string {
 		res.WriteString("*")
 	}
 	if p.Package != "" && p.Package != "UNDEFINED" {
-		p.Package = strings.ReplaceAll(p.Package, "Gen", "")
 		res.WriteString(p.Package)
 		res.WriteString(".")
 	}
+	p.Type = strings.ReplaceAll(p.Type, "Gen", "")
 	res.WriteString(p.Type)
 	return res.String()
 }
