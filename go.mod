@@ -7,7 +7,7 @@ require (
 	golang.org/x/tools v0.1.12
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/datatypes v1.0.7
-	gorm.io/driver/mysql v1.3.6
+	gorm.io/driver/mysql v1.4.3
 	gorm.io/driver/postgres v1.3.9
 	gorm.io/driver/sqlite v1.3.6
 	gorm.io/driver/sqlserver v1.3.2
@@ -17,7 +17,6 @@ require (
 )
 
 require (
-	github.com/PaulXu-cn/go-mod-graph-chart v0.5.3 // indirect
 	github.com/denisenkom/go-mssqldb v0.12.0 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/golang-sql/civil v0.0.0-20220223132316-b832511892a9 // indirect
